@@ -1,3 +1,6 @@
+using GIP5_ScrumBoard.Models;
+using Microsoft.EntityFrameworkCore;
+
 namespace GIP5_ScrumBoard
 {
     public class Program
@@ -8,6 +11,10 @@ namespace GIP5_ScrumBoard
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+            builder.Services.AddDbContext<ScrumBoardContext>(options =>
+            options.UseSqlServer(connectionString));
 
             var app = builder.Build();
 
