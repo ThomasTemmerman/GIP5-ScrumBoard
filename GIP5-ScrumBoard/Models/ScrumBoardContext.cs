@@ -1,8 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace GIP5_ScrumBoard.Models
 {
-    public partial class ScrumBoardContext : DbContext
+    public partial class ScrumBoardContext : IdentityDbContext
     {
         public ScrumBoardContext()
         {

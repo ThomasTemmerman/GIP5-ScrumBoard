@@ -1,5 +1,8 @@
 using GIP5_ScrumBoard.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using GIP5_ScrumBoard.Interfaces;
+using GIP5_ScrumBoard.Services;
 
 namespace GIP5_ScrumBoard
 {
@@ -11,10 +14,17 @@ namespace GIP5_ScrumBoard
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddScoped<IMilestoneService, MilestoneService>(); // DI
+            builder.Services.AddScoped<ITicketService, TicketService>(); // DI
 
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<ScrumBoardContext>(options =>
             options.UseSqlServer(connectionString));
+
+            builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+            options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ScrumBoardContext>();
+
+            builder.Services.AddRazorPages();
 
             var app = builder.Build();
 
@@ -31,7 +41,10 @@ namespace GIP5_ScrumBoard
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
+            
+            app.MapRazorPages();
 
             app.MapControllerRoute(
                 name: "default",
