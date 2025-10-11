@@ -1,6 +1,6 @@
 ﻿@using GIP5_ScrumBoard.Enum
 @using Microsoft.AspNetCore.Mvc.Rendering
-@model GIP5_ScrumBoard.Models.Ticket
+@model GIP5_ScrumBoard.ViewModels.Ticket.CreateTicketViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -34,7 +34,9 @@
             </div>
             <div class="form-group">
                 <label asp-for="AssignedTo" class="control-label"></label>
-                <input asp-for="AssignedTo" class="form-control" />
+                <select asp-for="AssignedTo" class="form-control" asp-items="Model.Users">
+                    <option value="">-- Select user --</option>
+                </select>
                 <span asp-validation-for="AssignedTo" class="text-danger"></span>
             </div>
             <div class="form-group">

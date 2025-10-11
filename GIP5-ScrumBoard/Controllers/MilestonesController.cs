@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace GIP5_ScrumBoard.Controllers
 {
-    [Authorize]
+    [Authorize(Roles ="Project Manager, Member")]
     public class MilestonesController : Controller
         // TODO: Logica toevoegen en alle crud checken!
     {
@@ -24,7 +24,6 @@ namespace GIP5_ScrumBoard.Controllers
             _milestoneService = milestone;
             _userManager = userManger;
         }
-        [AllowAnonymous]
         // GET: Milestones
         public async Task<IActionResult> Index()
         {

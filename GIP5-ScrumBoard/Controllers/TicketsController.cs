@@ -1,19 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using GIP5_ScrumBoard.Enum;
+using GIP5_ScrumBoard.Interfaces;
+using GIP5_ScrumBoard.Models;
+using GIP5_ScrumBoard.ViewModels.Ticket;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using GIP5_ScrumBoard.Models;
-using Microsoft.AspNetCore.Identity;
-using GIP5_ScrumBoard.Interfaces;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Authorization;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Sockets;
+using System.Threading.Tasks;
 
 namespace GIP5_ScrumBoard.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Project Manager, Member")]
     public class TicketsController : Controller
     {
         private readonly ITicketService _ticketService;
@@ -38,8 +41,12 @@ namespace GIP5_ScrumBoard.Controllers
             {
                 MilestoneId = milestoneId,
             };
-            // TODO?
-            return View();
+            var users = _userManager.Users.ToList();
+            var viewModel = new CreateTicketViewModel
+            {
+                Users = new SelectList(users, "UserName", "UserName")
+            };
+            return View(viewModel);
         }
 
         // POST: Tickets/Create
@@ -47,12 +54,22 @@ namespace GIP5_ScrumBoard.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("TicketId,MilestoneId,Title,Description,Status,AssignedTo")] Ticket ticket)
+        public async Task<IActionResult> Create(CreateTicketViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
+                    // CHECKEN
+                    var ticket = new Ticket
+                    {
+                        TicketId = viewModel.TicketId,
+                        MilestoneId = viewModel.MilestoneId,
+                        Title = viewModel.Title,
+                        Description = viewModel.Description,
+                        Status = viewModel.Status,
+                        AssignedTo = viewModel.AssignedTo
+                    };
                     await _ticketService.AddTicketAsync(ticket);
                     return RedirectToAction("Details", "Milestones", new {id = ticket.MilestoneId});
                 }
@@ -61,9 +78,9 @@ namespace GIP5_ScrumBoard.Controllers
                     ModelState.AddModelError("", e.Message);
                 }
             }
-            // TODO linken met Milestone (FK)
-            //ViewData["MilestoneId"] = new SelectList(_context.Milestone, "MilestoneId", "Title", ticket.MilestoneId);
-            return View(ticket);
+            var users = _userManager.Users.ToList();
+            viewModel.Users = new SelectList(users, "UserName", "UserName");
+            return View(viewModel);
         }
 
         // GET: Tickets/Edit/5
@@ -79,9 +96,18 @@ namespace GIP5_ScrumBoard.Controllers
             {
                 return NotFound();
             }
-            // TODO
-            //ViewData["MilestoneId"] = new SelectList(_context.Milestone, "MilestoneId", "Title", ticket.MilestoneId);
-            return View(ticket);
+            var users = _userManager.Users.ToList();
+            var viewModel = new EditTicketViewModel
+            {
+                TicketId = ticket.TicketId,
+                MilestoneId = ticket.MilestoneId,
+                Title = ticket.Title,
+                Status = ticket.Status,
+                AssignedTo = ticket.AssignedTo,
+                Description = ticket.Description,
+                Users = new SelectList(users, "UserName", "UserName")
+            };
+            return View(viewModel);
         }
 
         // POST: Tickets/Edit/5
@@ -89,9 +115,10 @@ namespace GIP5_ScrumBoard.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("TicketId,MilestoneId,Title,Description,Status,AssignedTo")] Ticket ticket)
+        public async Task<IActionResult> Edit(EditTicketViewModel viewModel)
         {
-            if (id != ticket.TicketId)
+            var ticket = await _ticketService.GetTicketByIdAsync(viewModel.TicketId);
+            if (ticket == null)
             {
                 return NotFound();
             }
@@ -100,6 +127,12 @@ namespace GIP5_ScrumBoard.Controllers
             {
                 try
                 {
+                    ticket.TicketId = viewModel.TicketId;
+                    ticket.MilestoneId = viewModel.MilestoneId;
+                    ticket.Status = viewModel.Status;
+                    ticket.AssignedTo = viewModel.AssignedTo;
+                    ticket.Description = viewModel.Description;
+
                     await _ticketService.UpdateTicketAsync(ticket);
                 }
                 catch (DbUpdateConcurrencyException)
@@ -113,10 +146,11 @@ namespace GIP5_ScrumBoard.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", "Milestones", new { id = ticket.MilestoneId });
             }
-            //ViewData["MilestoneId"] = new SelectList(_context.Milestone, "MilestoneId", "Title", ticket.MilestoneId);
-            return View(ticket);
+            var users = _userManager.Users.ToList();
+            viewModel.Users = new SelectList(users, "UserName", "UserName");
+            return View(viewModel);
         }
 
         // GET: Tickets/Delete/5
@@ -141,10 +175,9 @@ namespace GIP5_ScrumBoard.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            var ticket = await _ticketService.GetTicketByIdAsync(id);
             await _ticketService.DeleteTicketAsync(id);
-            // proberen om terug naar milestones index te gaan
-            return RedirectToAction(nameof(Index));
-           
+            return RedirectToAction("Details", "Milestones", new { id = ticket.MilestoneId });
         }
 
         private bool TicketExists(int id)
