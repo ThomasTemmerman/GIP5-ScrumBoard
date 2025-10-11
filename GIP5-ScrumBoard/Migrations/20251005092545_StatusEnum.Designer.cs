@@ -4,6 +4,7 @@ using GIP5_ScrumBoard.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GIP5_ScrumBoard.Migrations
 {
     [DbContext(typeof(ScrumBoardContext))]
-    partial class ScrumBoardContextModelSnapshot : ModelSnapshot
+    [Migration("20251005092545_StatusEnum")]
+    partial class StatusEnum
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,11 +33,11 @@ namespace GIP5_ScrumBoard.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("MilestoneId"));
 
-                    b.Property<DateTime>("EndDate")
-                        .HasColumnType("datetime2");
+                    b.Property<TimeSpan>("EndDate")
+                        .HasColumnType("time");
 
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("datetime2");
+                    b.Property<TimeSpan>("StartDate")
+                        .HasColumnType("time");
 
                     b.Property<string>("Title")
                         .IsRequired()

@@ -1,4 +1,5 @@
-﻿using GIP5_ScrumBoard.Models;
+﻿using GIP5_ScrumBoard.Enum;
+using GIP5_ScrumBoard.Models;
 
 namespace GIP5_ScrumBoard.Interfaces
 {

@@ -8,9 +8,12 @@ using Microsoft.EntityFrameworkCore;
 using GIP5_ScrumBoard.Models;
 using Microsoft.AspNetCore.Identity;
 using GIP5_ScrumBoard.Interfaces;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GIP5_ScrumBoard.Controllers
 {
+    [Authorize]
     public class TicketsController : Controller
     {
         private readonly ITicketService _ticketService;
@@ -29,9 +32,13 @@ namespace GIP5_ScrumBoard.Controllers
         }
 
             // GET: Tickets/Create
-        public IActionResult Create()
+        public IActionResult Create(int milestoneId)
         {
-            // TODO
+            var ticket = new Ticket
+            {
+                MilestoneId = milestoneId,
+            };
+            // TODO?
             return View();
         }
 
@@ -44,7 +51,15 @@ namespace GIP5_ScrumBoard.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _ticketService.AddTicketAsync(ticket);
+                try
+                {
+                    await _ticketService.AddTicketAsync(ticket);
+                    return RedirectToAction("Details", "Milestones", new {id = ticket.MilestoneId});
+                }
+                catch (ArgumentException e) 
+                {
+                    ModelState.AddModelError("", e.Message);
+                }
             }
             // TODO linken met Milestone (FK)
             //ViewData["MilestoneId"] = new SelectList(_context.Milestone, "MilestoneId", "Title", ticket.MilestoneId);
@@ -126,12 +141,9 @@ namespace GIP5_ScrumBoard.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var ticket = await _ticketService.GetTicketByIdAsync(id);
-            if (ticket == null)
-            {
-                return NotFound();
-            }
-            return View(ticket);
+            await _ticketService.DeleteTicketAsync(id);
+            // proberen om terug naar milestones index te gaan
+            return RedirectToAction(nameof(Index));
            
         }
 

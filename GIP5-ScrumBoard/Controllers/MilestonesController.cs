@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using GIP5_ScrumBoard.Models;
 using GIP5_ScrumBoard.Interfaces;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace GIP5_ScrumBoard.Controllers
 {
+    [Authorize]
     public class MilestonesController : Controller
         // TODO: Logica toevoegen en alle crud checken!
     {
@@ -22,7 +24,7 @@ namespace GIP5_ScrumBoard.Controllers
             _milestoneService = milestone;
             _userManager = userManger;
         }
-
+        [AllowAnonymous]
         // GET: Milestones
         public async Task<IActionResult> Index()
         {
@@ -30,7 +32,7 @@ namespace GIP5_ScrumBoard.Controllers
             return View(milestones);
         }
 
-       
+      
         // GET: Milestones/Create
         public IActionResult Create()
         {
@@ -58,6 +60,45 @@ namespace GIP5_ScrumBoard.Controllers
             }
             return View(milestone);
         }
+
+        // GET: Milestones/Details/5
+        public async Task<IActionResult> Details(int id)
+        {
+            var milestone = await _milestoneService.GetMilestoneByIdAsync(id);
+            if (milestone == null)
+            {
+                return NotFound();
+            }
+            return View(milestone);
+        }
+
+        // POST: Milestones/Details/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Details(int id, [Bind("MilestoneId,Title,StartDate,EndDate")] Milestone milestone)
+        {
+            if ( id != milestone.MilestoneId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    await _milestoneService.UpdateMilestoneAsync(milestone);
+                    // TempDate vervangen?
+                    TempData["SuccesMessage"] = "Milestone succesvol bijgewerkt";
+                    return RedirectToAction(nameof(Details), new { id = milestone.MilestoneId });
+                } catch (ArgumentException ex)
+                {
+                    ModelState.AddModelError("", "Er ging iets mis: " + ex.Message);
+                }
+            }
+            var existing = await _milestoneService.GetMilestoneByIdAsync(id);
+            return View(existing);
+        }
+
 
         // GET: Milestones/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -130,12 +171,8 @@ namespace GIP5_ScrumBoard.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var milestone = await _milestoneService.GetMilestoneByIdAsync(id);
-            if (milestone == null)
-            {
-                return NotFound();
-            }
-            return View(milestone);
+            await _milestoneService.DeleteMilestoneAsync(id);
+            return RedirectToAction(nameof(Index));
         }
 
         private bool MilestoneExists(int id)

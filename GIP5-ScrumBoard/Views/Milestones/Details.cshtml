@@ -4,33 +4,79 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Milestone Details</h1>
 
 <div>
     <h4>Milestone</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Title)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Title)
         </dd>
-        <dt class = "col-sm-2">
+
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.StartDate)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.StartDate)
         </dd>
-        <dt class = "col-sm-2">
+
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.EndDate)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.EndDate)
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.MilestoneId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+
+<hr />
+
+<h4>Tickets</h4>
+@if (Model.Tickets != null && Model.Tickets.Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Titel</th>
+                <th>Status</th>
+                <th>Toegewezen aan</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ticket in Model.Tickets)
+            {
+                <tr>
+                    <td>@ticket.Title</td>
+                    <td>@ticket.Status</td>
+                    <td>@ticket.AssignedTo</td>
+                    <td>
+                        <a asp-controller="Tickets" asp-action="Edit" asp-route-id="@ticket.TicketId" class="btn btn-sm btn-outline-primary">Bekijken</a>
+                        <a asp-controller="Tickets" asp-action="Delete" asp-route-id="@ticket.TicketId" class="btn btn-sm btn-outline-danger">Verwijderen</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Er zijn nog geen tickets gekoppeld aan deze milestone.</p>
+}
+
+<hr />
+
+<div class="mt-3">
+    @if (User.IsInRole("Project Manager"))
+    {
+    <a asp-action="Edit" asp-route-id="@Model.MilestoneId" class="btn btn-warning">Bewerken</a>
+    }
+    <a asp-controller="Tickets" asp-action="Create" asp-route-milestoneId="@Model.MilestoneId" class="btn btn-success">
+        Nieuw Ticket
+    </a>
+    <a asp-action="Index" class="btn btn-secondary">Terug naar lijst</a>
 </div>

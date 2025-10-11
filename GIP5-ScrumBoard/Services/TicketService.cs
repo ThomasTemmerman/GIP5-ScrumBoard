@@ -1,5 +1,7 @@
-﻿using GIP5_ScrumBoard.Interfaces;
+﻿using GIP5_ScrumBoard.Enum;
+using GIP5_ScrumBoard.Interfaces;
 using GIP5_ScrumBoard.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace GIP5_ScrumBoard.Services
 {
@@ -11,29 +13,41 @@ namespace GIP5_ScrumBoard.Services
         {
             _scrumBoardContext = scrumBoardContext;
         }
-        public Task AddTicketAsync(Ticket ticket)
+        public async Task AddTicketAsync(Ticket ticket)
         {
-            throw new NotImplementedException();
+            //ticket.Status = Status.TODO; Doen?
+            _scrumBoardContext.Ticket.Add(ticket);
+            await _scrumBoardContext.SaveChangesAsync();
         }
 
-        public Task DeleteTicketAsync(int ticketId)
+        public async Task DeleteTicketAsync(int ticketId)
         {
-            throw new NotImplementedException();
+            var ticket = await _scrumBoardContext.Ticket.FindAsync(ticketId);
+            if (ticket != null) 
+            {
+                _scrumBoardContext.Ticket.Remove(ticket);
+                await _scrumBoardContext.SaveChangesAsync();
+            }
+            else
+            {
+                throw new KeyNotFoundException(ticketId + " niet gevonden");
+            }
         }
 
-        public Task<IEnumerable<Ticket>> GetAllTicketsAsync()
+        public async Task<IEnumerable<Ticket>> GetAllTicketsAsync()
         {
-            throw new NotImplementedException();
+            return await _scrumBoardContext.Ticket.ToListAsync();
         }
 
-        public Task<Ticket> GetTicketByIdAsync(int ticketId)
+        public async Task<Ticket> GetTicketByIdAsync(int ticketId)
         {
-            throw new NotImplementedException();
+            return await _scrumBoardContext.Ticket.FindAsync(ticketId);
         }
 
-        public Task UpdateTicketAsync(Ticket ticket)
+        public async Task UpdateTicketAsync(Ticket ticket)
         {
-            throw new NotImplementedException();
+            _scrumBoardContext.Ticket.Update(ticket);
+            await _scrumBoardContext.SaveChangesAsync();
         }
     }
 }

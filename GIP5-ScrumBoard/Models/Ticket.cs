@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using GIP5_ScrumBoard.Enum;
+using System.ComponentModel.DataAnnotations;
 
 namespace GIP5_ScrumBoard.Models
 {
@@ -12,7 +13,7 @@ namespace GIP5_ScrumBoard.Models
         public string Title { get; set; } = string.Empty;
         public string Description { get; set; } = string.Empty;
         [Required]
-        public string Status { get; set; } = "To Do"; // Possible values: "To Do", "In Progress", "Done"
+        public Status Status { get; set; } = Status.TODO;// Possible values: "To Do", "In Progress", "Done"
         public string AssignedTo { get; set; } = string.Empty;
 
         public virtual Milestone Milestone { get; set; }

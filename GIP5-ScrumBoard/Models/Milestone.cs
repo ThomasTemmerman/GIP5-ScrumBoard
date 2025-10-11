@@ -10,9 +10,10 @@ namespace GIP5_ScrumBoard.Models
         [Required]
         public string Title { get; set; } = string.Empty;
         [Required]
-        public TimeSpan StartDate { get; set; }
+        public DateTime StartDate { get; set; }
         [Required]
-        public TimeSpan EndDate { get; set; }
+        public DateTime EndDate { get; set; }
+        // Veld met aantal tickets?
         public virtual ICollection<Ticket> Tickets { get; set; } = new List<Ticket>();
     }
 }

@@ -1,8 +1,12 @@
-﻿namespace GIP5_ScrumBoard.Enum
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace GIP5_ScrumBoard.Enum
 {
-    enum Status
+    public enum Status
     {
+        [Display(Name ="To Do")]
         TODO,
+        [Display(Name ="In progress")]
         InProgress,
         Done
     }

@@ -34,12 +34,16 @@ namespace GIP5_ScrumBoard.Services
 
         public async Task<IEnumerable<Milestone>> GetAllMilestonesAsync()
         {
-            return await _scrumBoardContext.Milestone.ToListAsync();
+            return await _scrumBoardContext.Milestone
+                .Include(m => m.Tickets)
+                .ToListAsync();
         }
 
         public async Task<Milestone> GetMilestoneByIdAsync(int milestoneId)
         {
-            return await _scrumBoardContext.Milestone.FindAsync(milestoneId);
+            return await _scrumBoardContext.Milestone
+                .Include(m => m.Tickets)
+                .FirstOrDefaultAsync(m => m.MilestoneId == milestoneId);
         }
 
         public async Task UpdateMilestoneAsync(Milestone milestone)
