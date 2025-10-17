@@ -13,7 +13,11 @@ namespace GIP5_ScrumBoard.Services
             _scrumBoardContext = scrumBoardContext;
         }
         public async Task AddMilestoneAsync(Milestone milestone)
-        {
+        {                        
+            if (milestone.EndDate.Date < milestone.StartDate.Date)
+            {
+                throw new ArgumentException("Eind datum mag niet in het verleden zijn");
+            }
           _scrumBoardContext.Milestone.Add(milestone);
             await _scrumBoardContext.SaveChangesAsync();
         }
@@ -48,6 +52,10 @@ namespace GIP5_ScrumBoard.Services
 
         public async Task UpdateMilestoneAsync(Milestone milestone)
         {
+            if (milestone.EndDate.Date < milestone.StartDate.Date)
+            {
+                throw new ArgumentException("Eind datum mag niet in het verleden zijn");
+            }
             _scrumBoardContext.Milestone.Update(milestone);
             await _scrumBoardContext.SaveChangesAsync();
         }

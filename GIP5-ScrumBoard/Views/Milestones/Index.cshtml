@@ -10,7 +10,7 @@
     @if (User.IsInRole("Project Manager"))
     {
     <a asp-action="Create" class="btn btn-success">
-       <i class="fa-solid fa-plus fa-fw me-1"></i>Milestone toevoegen
+       <i class="fa-solid fa-plus fa-fw me-1"></i>Create Milestone
     </a>
     }
 </p>
@@ -52,14 +52,14 @@
                 {
 
                 <a asp-action="Edit" asp-route-id="@item.MilestoneId" class="btn btn-sm btn-outline-success">
-                  <i class="fa-solid fa-pencil fa-fw me-1"></i>Bewerken
+                  <i class="fa-solid fa-pencil fa-fw me-1"></i>Edit
                 </a>
                 <a asp-action="Delete" asp-route-id="@item.MilestoneId" class="btn btn-sm btn-outline-danger">
-                   <i class="fa-solid fa-trash fa-fw me-1"></i>Verwijderen
+                   <i class="fa-solid fa-trash fa-fw me-1"></i>Delete
                 </a>
             }
                 <a asp-action="Details" asp-route-id="@item.MilestoneId" class="btn btn-sm btn-outline-primary">
-                   <i class="fa-solid fa-eye fa-fw me-1"></i>Bekijken
+                   <i class="fa-solid fa-eye fa-fw me-1"></i>Details
                 </a>
             </td>
         </tr>

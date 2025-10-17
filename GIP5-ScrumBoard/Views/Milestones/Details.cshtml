@@ -41,9 +41,10 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Titel</th>
+                <th>Title</th>
+                <th>Discription</th>
                 <th>Status</th>
-                <th>Toegewezen aan</th>
+                <th>Assigned To</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -52,14 +53,28 @@
             {
                 <tr>
                     <td>@ticket.Title</td>
-                    <td>@ticket.Status</td>
+                    <td>@ticket.Description</td>
+                    <td>
+                        @if (ticket.Status == GIP5_ScrumBoard.Enum.Status.TODO)
+                        {
+                            <span class="badge bg-danger">To Do</span>
+                        }
+                        else if (ticket.Status == GIP5_ScrumBoard.Enum.Status.InProgress)
+                        {
+                            <span class="badge bg-warning text-dark">In Progress</span>
+                        }
+                        else if (ticket.Status == GIP5_ScrumBoard.Enum.Status.Done)
+                        {
+                            <span class="badge bg-success">Done</span>
+                        }
+                    </td>
                     <td>@ticket.AssignedTo</td>
                     <td>
                         <a asp-controller="Tickets" asp-action="Edit" asp-route-id="@ticket.TicketId" class="btn btn-sm btn-outline-primary">
-                         <i class="fa-solid fa-eye fa-fw me-1"></i>Bekijken
+                         <i class="fa-solid fa-pencil fa-fw me-1"></i>Edit
                          </a>
                         <a asp-controller="Tickets" asp-action="Delete" asp-route-id="@ticket.TicketId" class="btn btn-sm btn-outline-danger">
-                            <i class="fa-solid fa-trash fa-fw me-1"></i>Verwijderen
+                            <i class="fa-solid fa-trash fa-fw me-1"></i>Delete
                         </a>
                     </td>
                 </tr>
@@ -78,7 +93,7 @@
 }
 else
 {
-    <p>Er zijn nog geen tickets gekoppeld aan deze milestone.</p>
+    <p>There are no tickets associated with this milestone yet.</p>
 }
 
 <hr />
@@ -87,13 +102,13 @@ else
     @if (User.IsInRole("Project Manager"))
     {
     <a asp-action="Edit" asp-route-id="@Model.MilestoneId" class="btn btn-warning">
-            <i class="fa-solid fa-pencil fa-fw me-1"></i>Bewerken
+            <i class="fa-solid fa-pencil fa-fw me-1"></i>Edit Milestone
         </a>
     }
     <a asp-controller="Tickets" asp-action="Create" asp-route-milestoneId="@Model.MilestoneId" class="btn btn-success">
-        <i class="fa-solid fa-plus fa-fw me-1"></i>Nieuw Ticket
+        <i class="fa-solid fa-plus fa-fw me-1"></i>New Ticket
     </a>
     <a asp-action="Index" class="btn btn-secondary">
-        <i class="fa-solid fa-house fa-fw me-1"></i>Terug naar Milestones
+        <i class="fa-solid fa-house fa-fw me-1"></i>Back to Milestones
     </a>
 </div>

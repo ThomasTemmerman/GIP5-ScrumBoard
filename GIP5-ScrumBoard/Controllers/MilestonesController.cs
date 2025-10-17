@@ -54,7 +54,7 @@ namespace GIP5_ScrumBoard.Controllers
                 }
                 catch (ArgumentException ex)
                 {
-                    ModelState.AddModelError("", ex.Message);
+                    ModelState.AddModelError(nameof(milestone.EndDate), ex.Message);
                 }
             }
             return View(milestone);
@@ -130,8 +130,15 @@ namespace GIP5_ScrumBoard.Controllers
             {
                 try
                 {
-                    await _milestoneService.UpdateMilestoneAsync(milestone);
-                    return RedirectToAction("Index");
+                    try
+                    {
+                        await _milestoneService.UpdateMilestoneAsync(milestone);
+                        return RedirectToAction("Index");
+                    }
+                    catch (ArgumentException ex)
+                    {
+                        ModelState.AddModelError(nameof(milestone.EndDate), ex.Message);
+                    }
                 }
                 catch (DbUpdateConcurrencyException)
                 {
