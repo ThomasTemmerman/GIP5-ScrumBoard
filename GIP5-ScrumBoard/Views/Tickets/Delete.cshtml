@@ -45,7 +45,11 @@
     
     <form asp-action="Delete">
         <input type="hidden" asp-for="TicketId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index" asp-controller="Milestones">Back to Milestones</a>
+        <button type="submit" class="btn btn-danger">
+            <i class="fa-solid fa-trash fa-fw me-1"></i>Delete
+        </button>
+        <a asp-controller="Milestones" asp-action="Index" class="btn btn-secondary">
+            <i class="fa-solid fa-house fa-fw me-1"></i>Terug naar lijst
+        </a>
     </form>
 </div>

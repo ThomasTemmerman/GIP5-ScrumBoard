@@ -40,14 +40,15 @@
                 <span asp-validation-for="AssignedTo" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <button type="submit" class="btn btn-success">
+                    <i class="fa-solid fa-plus fa-fw me-1"></i>Create
+                </button>
+                <a asp-controller="Milestones" asp-action="Index" class="btn btn-secondary">
+                    <i class="fa-solid fa-house fa-fw me-1"></i>Terug naar lijst
+                </a>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index" asp-controller="Milestones">Back to Milestone</a>
 </div>
 
 @section Scripts {

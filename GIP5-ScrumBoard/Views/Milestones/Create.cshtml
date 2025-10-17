@@ -28,14 +28,18 @@
                 <span asp-validation-for="EndDate" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <button type="submit" class="btn btn-success">
+                    <i class="fa-solid fa-plus fa-fw"></i>Create
+                </button>
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" class="btn btn-danger">
+        <i class="fa-solid fa-house fa-fw"></i>Terug naar lijst
+    </a>
 </div>
 
 @section Scripts {

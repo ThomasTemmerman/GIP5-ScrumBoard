@@ -9,7 +9,9 @@
 <p>
     @if (User.IsInRole("Project Manager"))
     {
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-success">
+       <i class="fa-solid fa-plus fa-fw me-1"></i>Milestone toevoegen
+    </a>
     }
 </p>
 <table class="table">
@@ -27,7 +29,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Tickets)
              </th>
-            <th></th>
+             <th>Actions</th>
         </tr>
     </thead>
     <tbody>
@@ -45,17 +47,31 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Tickets.Count)
             </td>
+            <td>
             @if (User.IsInRole("Project Manager"))
                 {
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.MilestoneId">Edit</a> |
-                <a asp-action="Delete" asp-route-id="@item.MilestoneId">Delete</a>
-            </td>
+
+                <a asp-action="Edit" asp-route-id="@item.MilestoneId" class="btn btn-sm btn-outline-success">
+                  <i class="fa-solid fa-pencil fa-fw me-1"></i>Bewerken
+                </a>
+                <a asp-action="Delete" asp-route-id="@item.MilestoneId" class="btn btn-sm btn-outline-danger">
+                   <i class="fa-solid fa-trash fa-fw me-1"></i>Verwijderen
+                </a>
             }
-            <td>
-                <a asp-action="Details" asp-route-id="@item.MilestoneId">Details</a>
+                <a asp-action="Details" asp-route-id="@item.MilestoneId" class="btn btn-sm btn-outline-primary">
+                   <i class="fa-solid fa-eye fa-fw me-1"></i>Bekijken
+                </a>
             </td>
         </tr>
 }
     </tbody>
 </table>
+@section Scripts {
+    <script>
+                $(document).ready( function () {
+            $('table').DataTable({
+
+            });
+        } );
+    </script>
+}
