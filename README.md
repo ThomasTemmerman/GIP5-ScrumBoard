@@ -1,25 +1,25 @@
 == ScrumBoard ==
 
-ScrumBoard is een ASP.NET MVC webapplicatie ontwikkeld als schoolproject.
-Het doel is om een eenvoudige omgeving te bieden waarin een projectmanager en teamleden kunnen samenwerken via een digitaal Scrum Board.
+ScrumBoard is an ASP.NET MVC web application developed as a school project.
+The goal is to provide a simple environment where a project manager and team members can collaborate through a digital Scrum Board.
 
--Functionaliteiten:
+– Features:
 
---Project Manager
+Project Manager
 
-Kan CRUD-operaties uitvoeren op milestones en tickets
+Can perform CRUD operations on milestones and tickets
 
-Kan tickets toewijzen aan specifieke teamleden
+Can assign tickets to specific team members
 
-Beheert de voortgang van projecten via statussen: To Do, In Progress, Done
+Manages project progress through statuses: To Do, In Progress, Done
 
---Teamleden (Members)
+Team Members
 
-Kunnen zich assignen aan tickets
+Can assign themselves to tickets
 
-Kunnen de status van hun toegewezen tickets aanpassen
+Can update the status of their assigned tickets
 
--Technologieën
+– Technologies:
 
 ASP.NET MVC (.NET 8)
 
@@ -27,10 +27,9 @@ Entity Framework Core
 
 Microsoft SQL Server
 
-Identity Framework (voor authenticatie en rollenbeheer)
+Identity Framework (for authentication and role management)
 
-Bootstrap (voor front-end layout)
+Bootstrap (for front-end layout)
 
--Doel:
-
-Dit project werd ontwikkeld in het kader van een schoolopdracht, met als doel ervaring op te doen in webontwikkeling, database-integratie en role-based access control binnen het .NET-ecosysteem.
+– Purpose:
+This project was developed as part of a school assignment, with the aim of gaining experience in web development, database integration, and role-based access control within the .NET ecosystem.
