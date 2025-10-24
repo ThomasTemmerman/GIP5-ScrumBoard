@@ -9,5 +9,7 @@ namespace GIP5_ScrumBoard.Interfaces
         Task DeleteMilestoneAsync(int milestoneId);
         Task<IEnumerable<Milestone>> GetAllMilestonesAsync();
         Task<Milestone> GetMilestoneByIdAsync(int milestoneId);
+        Task<string> DownloadTickets(int mileStoneId);
+
     }
 }

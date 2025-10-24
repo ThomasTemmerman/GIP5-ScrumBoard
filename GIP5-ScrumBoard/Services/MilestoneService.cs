@@ -1,6 +1,7 @@
 ﻿using GIP5_ScrumBoard.Interfaces;
 using GIP5_ScrumBoard.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
 
 namespace GIP5_ScrumBoard.Services
 {
@@ -58,6 +59,23 @@ namespace GIP5_ScrumBoard.Services
             }
             _scrumBoardContext.Milestone.Update(milestone);
             await _scrumBoardContext.SaveChangesAsync();
+        }
+        public async Task<string> DownloadTickets(int milestoneId)
+        {
+            var milestone = await GetMilestoneByIdAsync(milestoneId);
+
+            if (milestone == null)
+            {
+                throw new ArgumentException("Milestone not found");
+            }
+
+            var stringBuilder = new StringBuilder();
+            stringBuilder.AppendLine("TicketId,Title,Description,Status,AssignedTo");
+            foreach (var ticket in milestone.Tickets)
+            {
+                stringBuilder.AppendLine($"{ticket.TicketId},{ticket.Title},{ticket.Description},{ticket.Status},{ticket.AssignedTo}");
+            }
+            return stringBuilder.ToString();
         }
     }
 }

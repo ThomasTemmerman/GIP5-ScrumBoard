@@ -2,6 +2,7 @@
 using GIP5_ScrumBoard.Interfaces;
 using GIP5_ScrumBoard.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Text;
 
 namespace GIP5_ScrumBoard.Services
 {

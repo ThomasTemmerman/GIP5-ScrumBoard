@@ -108,6 +108,9 @@ else
     <a asp-controller="Tickets" asp-action="Create" asp-route-milestoneId="@Model.MilestoneId" class="btn btn-success">
         <i class="fa-solid fa-plus fa-fw me-1"></i>New Ticket
     </a>
+    <a asp-action="DownloadTickets" asp-route-id="@Model.MilestoneId" class="btn btn-success">
+        <i class="fa-solid fa-download fa-fw me-1"></i>Download tickets CSV
+    </a>
     <a asp-action="Index" class="btn btn-secondary">
         <i class="fa-solid fa-house fa-fw me-1"></i>Back to Milestones
     </a>

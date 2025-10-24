@@ -9,17 +9,17 @@ using GIP5_ScrumBoard.Models;
 using GIP5_ScrumBoard.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authorization;
+using System.Text;
 
 namespace GIP5_ScrumBoard.Controllers
 {
     [Authorize(Roles ="Project Manager, Member")]
     public class MilestonesController : Controller
-        // TODO: Logica toevoegen en alle crud checken!
     {
         private readonly IMilestoneService _milestoneService; // DI
         private readonly UserManager<IdentityUser> _userManager;
 
-        public MilestonesController(IMilestoneService milestone, UserManager<IdentityUser> userManger)
+        public MilestonesController(IMilestoneService milestone, UserManager<IdentityUser> userManger, ITicketService ticket)
         {
             _milestoneService = milestone;
             _userManager = userManger;
@@ -184,6 +184,15 @@ namespace GIP5_ScrumBoard.Controllers
         private bool MilestoneExists(int id)
         {
             return _milestoneService.GetMilestoneByIdAsync(id) != null;
+        }
+
+        public async Task<IActionResult> DownloadTickets(int id)
+        {
+            var content = await _milestoneService.DownloadTickets(id);
+                var bytes = Encoding.UTF8.GetBytes(content);
+                var fileName = "tickets.csv";
+
+                return File(bytes, "text/csv", fileName);
         }
     }
 }
