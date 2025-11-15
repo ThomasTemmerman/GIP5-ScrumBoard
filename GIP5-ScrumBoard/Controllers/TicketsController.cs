@@ -60,7 +60,6 @@ namespace GIP5_ScrumBoard.Controllers
             {
                 try
                 {
-                    // CHECKEN
                     var ticket = new Ticket
                     {
                         TicketId = viewModel.TicketId,
