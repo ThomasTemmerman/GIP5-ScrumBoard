@@ -17,7 +17,7 @@ namespace GIP5_ScrumBoard.Services
         {                        
             if (milestone.EndDate.Date < milestone.StartDate.Date)
             {
-                throw new ArgumentException("Eind datum mag niet in het verleden zijn");
+                throw new ArgumentException("End date cannot be in the past");
             }
           _scrumBoardContext.Milestone.Add(milestone);
             await _scrumBoardContext.SaveChangesAsync();
@@ -33,7 +33,7 @@ namespace GIP5_ScrumBoard.Services
             }
             else
             {
-                throw new KeyNotFoundException(milestoneId + " niet gevonden");
+                throw new KeyNotFoundException(milestoneId + " not found");
             }
         }
 
@@ -55,7 +55,7 @@ namespace GIP5_ScrumBoard.Services
         {
             if (milestone.EndDate.Date < milestone.StartDate.Date)
             {
-                throw new ArgumentException("Eind datum mag niet in het verleden zijn");
+                throw new ArgumentException("End date cannot be in the past");
             }
             _scrumBoardContext.Milestone.Update(milestone);
             await _scrumBoardContext.SaveChangesAsync();

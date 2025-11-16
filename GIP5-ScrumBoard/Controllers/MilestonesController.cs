@@ -87,11 +87,11 @@ namespace GIP5_ScrumBoard.Controllers
                 {
                     await _milestoneService.UpdateMilestoneAsync(milestone);
                     // TempDate vervangen?
-                    TempData["SuccesMessage"] = "Milestone succesvol bijgewerkt";
+                    TempData["SuccesMessage"] = "Milestone changed";
                     return RedirectToAction(nameof(Details), new { id = milestone.MilestoneId });
                 } catch (ArgumentException ex)
                 {
-                    ModelState.AddModelError("", "Er ging iets mis: " + ex.Message);
+                    ModelState.AddModelError("", "Something went wrong: " + ex.Message);
                 }
             }
             var existing = await _milestoneService.GetMilestoneByIdAsync(id);

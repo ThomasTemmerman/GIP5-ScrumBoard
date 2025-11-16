@@ -31,7 +31,7 @@ namespace GIP5_ScrumBoard.Services
             }
             else
             {
-                throw new KeyNotFoundException(ticketId + " niet gevonden");
+                throw new KeyNotFoundException(ticketId + " not found");
             }
         }
 
